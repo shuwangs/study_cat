@@ -1,0 +1,39 @@
+@startuml
+    [*] --> Idle: start extension / stopSession()
+    Idle --> Active : startSession() / setMood(Happy)
+    Active --> Paused : pauseSession() / setMood(Sleepy)
+    Active --> Idle : stopSession() / setMood(Sleepy)
+    Active --> Active : systemMinuteTick() / rewardCoins(+1)
+
+    Active --> Penalty : visitBlacklistedSite() / applyCoinPenalty(-10)
+    Active --> Inactive : inactivityTimeout(10min) / setMood(Sleepy)
+    Active --> Bonus : sessionGoalAchieved() / rewardCoins(+20)
+
+    Paused --> Active : resumeSession() / setMood(Happy)  
+    Paused --> Idle : stopSession() / setMood(Sleepy)
+
+    Penalty --> Active : resumeFocus() / setMood(Happy)
+    Bonus --> Active : celebrationEnds()|startNewSession() / setMood(Happy)
+
+    Inactive --> Active : resumeActivity() / setMood(Happy)
+    Inactive --> Paused : pauseSession() / setMood(Sleepy)
+    Inactive --> Idle : stopSession() / setMood(Sleepy)
+    Inactive --> Inactive : continuedInactivity(5min) / applyCoinPenalty(-5)
+  
+    state Active {
+        Active : Mood: Happy (Default)
+    }
+    state Penalty {
+        Penalty : Mood: Angry
+    }
+    state Bonus {
+        Bonus : Mood: Excited
+    }
+    state Inactive {
+        Inactive : Mood: Sleepy
+    }
+    state Paused {
+        Paused : Mood: Sleepy
+    }
+
+@enduml
