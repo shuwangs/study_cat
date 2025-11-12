@@ -1,0 +1,36 @@
+@startuml
+title StudyCat - Start Session Sequence\n-User study very hard
+
+actor User
+
+participant "Popup UI\n(popup.ts)" as Popup
+control "Background SW\n(background.ts)" as BG
+participant "Reward System\n(reward.ts)" as Reward
+participant "Spy Script\n(spy.ts)" as Spy
+participant "Cat Companision\n(cat.ts)" as Cat
+participant "Notification Manager\n(notify.ts)" as Notify
+database "DataStore\n(chrome.storage.sync)" as Store
+
+
+== User starts session, work hard ==
+User -> Popup : click "Start"
+activate Popup
+
+BG --> Reward
+activate Reward
+
+Popup --> BG: Start_Session 
+
+loop every minutes
+  BG --> BG: clock ticks
+  BG --> Reward: add to Reward
+  BG --> Cat : cat happy
+  BG --> Popup : time progress
+  ' Reward --> Store
+end
+Reward --> Store
+User --> Popup : User click stop
+Popup --> BG : Stop session
+BG --> Cat: sleepy
+
+@enduml
