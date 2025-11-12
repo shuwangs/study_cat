@@ -13,13 +13,19 @@
     Paused --> Idle : stopSession() / setMood(Sleepy)
 
     Penalty --> Active : resumeFocus() / setMood(Happy)
+    Penalty --> Bankruptcy : coins <= 0 / rehomeCurrentCat(), switchToDefault()
+
     Bonus --> Active : celebrationEnds()|startNewSession() / setMood(Happy)
 
     Inactive --> Active : resumeActivity() / setMood(Happy)
     Inactive --> Paused : pauseSession() / setMood(Sleepy)
     Inactive --> Idle : stopSession() / setMood(Sleepy)
     Inactive --> Inactive : continuedInactivity(5min) / applyCoinPenalty(-5)
-  
+    Inactive --> Bankruptcy : coins <= 0 / rehomeCurrentCat(), switchToDefault()
+
+    state Bankruptcy : Mood: Sad
+    Bankruptcy --> Idle : confirmLoss() / setMood(Sleepy)
+
     state Active {
         Active : Mood: Happy (Default)
     }
