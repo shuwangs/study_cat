@@ -1,0 +1,145 @@
+@startuml
+
+  '----------- Enume and fundamental class -------------'
+  enum Mood {
+      HAPPY
+      EXCITED
+      ANGRY
+      SLEEPY
+      SAD
+  }
+
+  class CatModel{
+    - id: string
+    - name: string
+    - currentMood: Mood
+    - price: number
+    - isUnlocked: boolean
+    - isDefault: boolean
+    + setName(string)
+    + setMood(mood: Mood)
+    + getCurrentMood(mood: Mood)
+    + unlock(): void
+    + isDefaultCat(): boolean
+  }
+
+  '------------------ Core Functions ----------------------'
+  class StudySession {
+    - startTime: Datetime
+    - endTime: Datetime
+    - duration: number
+    - isActive: boolean
+    - isPaused: boolean
+    + startSession(): void
+    + pauseSession(): void
+    + resumeSession(): void
+    + stopSession(): void
+    + getElapsedTime(): number
+  }
+  class RewardSystem {
+    - coins: number
+    - penaltyAmount: number
+    - dailyBonus: number
+    + calRewards(minutes: number): number
+    + addBonus(): number
+    + applyPenalty(): number
+    + getCoinBalance(): number
+    + checkBankruptcy(): boolean
+    + handleBankruptcy(): void
+  }
+
+  class NotificationManager {
+    + showSessionStart(): void
+    + showSessionEnd(): void
+    + showGoalAchieved(): void
+    + showPenaltyWarning(): void
+    + showBankruptcyWarning(): void
+    + showCatRehomed(catName: string): void
+    + playSound(effect: string): void
+  }
+
+
+  ' -------------------- DATA Related Class --------------------------'
+  class UserSettings {
+    - dailyGoalMinutes: number
+    - sessionGoalMinutes: number
+    - blackList: String []
+    + setDailyGoal()
+    + setSessionGoal()
+    + addBlackList()
+    + removeBlackList()
+  }
+ 
+  class UserData {
+    - selectedCatId: string
+    - totalCoins: number
+    - dailyFocusMinute: number[]
+    - totalFocusMinutes: number
+    - unlockedCats: CatModel[]
+    - rehomedCats: string[]
+    - purchasedItems: string[]
+    + unlockCat(catId: string): void
+    + getDailyProgress(): number
+    + addFocusTime(minutes: number): void
+    + setCurrentCat(string):void
+    + loseCurrentCat(): void
+    + switchToDefaultCat(): void
+    + getDefaultCat(): CatModel
+  }
+
+  class StorageManager {
+    - userData: UserData
+    + loadUserData(): UserData
+    + saveUserData(data: UserData): void
+    + loadSettings(): UserSettings
+    + saveSettings(settings: UserSettings): void
+    + initializeUserData(): void
+    + initializeSettings(): void
+  }
+
+
+  ' ------------------ SHOP (Optional Stage) ------------------
+  class Shop {
+    - availableCats: CatModel[]
+    - cosmeticItems: CosmeticItem[]
+    + getAvailableItems(): Item[]
+    + purchaseItem(userData: UserData, itemId: string): boolean
+    + canAfford(coins: number, price: number): boolean
+  }
+
+  class CosmeticItem {
+    - id: string
+    - name: string
+    - type: string
+    - price: number
+    - equipped: boolean
+  }
+
+
+'------------------------- RealationShips---------------
+Mood ||..|| CatModel : uses
+
+UserData "1" *-- "*" CatModel : has >
+UserData "1" --> "1" CatModel : selected >
+UserData "1" *-- "1" UserSettings : has >
+UserData "1" *-- "1" RewardSystem : contains >
+
+StudySession "1" --> "1" RewardSystem : updates >
+StudySession "1" --> "1" UserData : record time >
+StudySession "1" --> "1" CatModel : affect mood >
+StudySession "1" --> "1" NotificationManager: notifies >
+
+RewardSystem "1" --> "1" NotificationManager : triggers >
+RewardSystem "1" --> "1" UserData : checks bankruptcy >
+RewardSystem "1" --> "1" CatModel : may rehome >
+
+StorageManager "1" --> "1" UserData : manages >
+StorageManager "1" --> "1" UserSettings : manages >
+
+
+Shop "1" --> "*" CatModel : sells >
+Shop "1" --> "*" CosmeticItem : sells >
+UserData "1" --> "*" CosmeticItem : owns >
+UserData "1" --> "*" CatModel : unlocks >
+
+@enduml
