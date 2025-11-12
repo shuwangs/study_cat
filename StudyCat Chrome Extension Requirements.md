@@ -37,6 +37,7 @@ By combining behavioral feedback and gamified rewards, StudyCat transforms ordin
      - Penalty for Distracting Websites
        - If the user visits a website listed in the blacklist while studying, the system deducts a fixed penalty (e.g., 10 coins).
        - The cat’s mood immediately changes to “angry,” and an alert or short sound plays as feedback.
+       - When bankrupt (e.g coins < 5) is triggered, the selected cat will be rehomed. changed to default cat.
 
 5. Cat Mood and Behavior
       - The companion cat’s animation dynamically reflects the user’s current behavior:
