@@ -22,10 +22,8 @@ package "StudyCat Chrome Extension" {
 ' User interactions
 User --> Popup : clicks buttons / view progress
 Popup --> Background : start/pause/resume/stop session
+Popup --> Background : request coin balance / cat mood
 
-Popup --> Session : start/pause/resume/stop session
-Popup --> Reward : check coins
-Popup --> Cat : get cat status
 
 ' Background flow
 Background --> Session : track time

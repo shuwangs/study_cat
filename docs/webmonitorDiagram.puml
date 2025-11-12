@@ -1,0 +1,12 @@
+@startuml
+title BlackList Monitor
+
+User -> website: BlackList: e.g. youtube.com
+website -> ContentScript: inject script
+ContentScript -> Background: "found youtube!"
+Background -> Background: check BlackList
+Background -> RewardSystem: applyPenalty
+Background -> CatModel: update mood to anger
+Background -> Notification: notify the penalty
+Notification -> User: "Deduct coints"
+@enduml
