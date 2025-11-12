@@ -1,0 +1,47 @@
+@startuml
+title StudyCat Chrome Extension - Architecture
+
+left to right direction
+
+actor User
+
+package "StudyCat Chrome Extension" {
+  [Popup Interface] as Popup
+  [Background Worker] as Background
+  [Content Script (CatUI)] as Content
+  [Storage Layer] as Storage
+
+  package "Core Business Logic" {
+    [StudySession Manager] as Session
+    [Reward System] as Reward
+    [Cat Companion] as Cat
+    [Notification Manager] as Notify
+  }
+}
+
+' User interactions
+User --> Popup : clicks buttons / view progress
+Popup --> Background : start/pause/resume/stop session
+
+Popup --> Session : start/pause/resume/stop session
+Popup --> Reward : check coins
+Popup --> Cat : get cat status
+
+' Background flow
+Background --> Session : track time
+Background --> Reward : calculate reward
+Background --> Cat : update cat mood
+Background --> Notify : trigger notifications
+
+' Web monirotring
+Background --> Content : update cat mood / animation
+Content --> Background : report page activity / blacklist visit
+
+' Data 
+Storage --> Popup : load/save state
+Popup --> Storage : quick load for display
+
+' User feedback
+Notify --> User : alert / info
+Cat --> Popup : display mood animation
+@enduml
