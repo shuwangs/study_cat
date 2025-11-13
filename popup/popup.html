@@ -1,9 +1,41 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>StudyCat</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+
   <body>
-    <h1>Hello Extensions</h1>
-    <p>Hello! This is your popup.</p>
+    <h1 class="timer_title">StudyCat</h1>
+    <div class="timer-container">
+      <div class="time_input" id="timeInput">
+        <label for="minutes">
+          <input type="number" id="minutes" min="0" max="59" value="30">
+          Minutes
+        </label>
+        <label for="seconds">
+          <input type="number" id="seconds" min="0" max="59" value="0">
+          Seconds
+        </label>
+      </div>
+      <div class="timer_display" id="timerDisplay">
+        30:00
+      </div>
+      <div class="control_btn">
+        <button class="btn btn-primary" id="startBtn">Start</button>
+        <button class="btn btn-primary" id="resetBtn">Reset</button>
+
+      </div>
+
+      <div class="cat_containter">
+        <div class="cat">
+          <p style="font-size:100px">&#128568;</p>
+        </div>
+      </div>
+    </div>
+
 
     <script src="popup.js"></script>
-
   </body>
 </html>
