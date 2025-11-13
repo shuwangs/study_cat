@@ -6,7 +6,7 @@ Tasks:
 - [X] 0.2 Create basic project structure with manifest.json
 - [X] 0.3 Implement simple Popup UI (display "Hello StudyCat")
 - [X] 0.4 Load extension in Chrome developer mode
-- [ ] 0.5 Research Chrome Web Store publication process
+- [-] 0.5 Research Chrome Web Store publication process
 
 
 ## **MileStone 1**: Implement basic timer and data management
