@@ -4,7 +4,11 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "action" :{
-    "default_popup": "hello.html",
+    "default_popup": "popup/popup.html",
     "default_icon" :"hello_extensions.png"
+  },
+  "content_security_policy": {
+    "script-src": "'self' 'sha256-QGeDdF2V095YBhx2t1PW6xsymddqgrQpddTQJxiUntY='",
+    "object-src": "'self'"
   }
 }
