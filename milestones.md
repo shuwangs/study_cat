@@ -14,7 +14,7 @@ Tasks:
 Due: 🗓️ Nov 15, 2025
 
 Tasks:
-- [ ] 1.1 Popup UI layout with timer display area
+- [X] 1.1 Popup UI layout with timer display area
 - [ ] 1.2 Start/Pause/Stop timer functionality
 - [ ] 1.3 Coin system initialization (start with 0 coins)
 - [ ] 1.4 Cat mood state management (default SLEEPY state)
