@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>StudyCat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="popup.css">
   </head>
 
@@ -11,16 +12,16 @@
     <div class="timer-container">
       <div class="time_input" id="timeInput">
         <label for="minutes">
-          <input type="number" id="minutes" min="0" max="59" value="30">
+          <input type="number" id="minutes" min="0" max="59" value="25">
           Minutes
         </label>
         <label for="seconds">
-          <input type="number" id="seconds" min="0" max="59" value="0">
+          <input type="number" id="seconds" min="0" max="59" value="00">
           Seconds
         </label>
       </div>
       <div class="timer_display" id="timerDisplay">
-        30:00
+        25:00
       </div>
       <div class="control_btn">
         <button class="btn btn-primary" id="startBtn">Start</button>
@@ -29,6 +30,10 @@
       </div>
 
       <div class="cat_containter">
+        <div class="coin_container">
+          <i class="bi bi-coin"></i>
+          <span id="coinCount">0</span>
+        </div>
         <div class="cat">
           <p style="font-size:100px">&#128568;</p>
         </div>
