@@ -14,14 +14,14 @@ body{
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  padding: 10px;
+  /* padding: 10px; */
   text-align: center;
 }
 
 .time_input {
   display: flex;
   flex-direction: row; 
-  margin: 20px 0;
+  margin: 10px 0;
   gap: 10px;
 }
 
@@ -57,8 +57,13 @@ body{
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
+.control_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 .btn {
+  margin: 5px;
   padding: 12px 20px;
   border: none;
   border-radius: 12px;
