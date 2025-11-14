@@ -16,10 +16,10 @@ Due: 🗓️ Nov 15, 2025
 Tasks:
 - [X] 1.1 Popup UI layout with timer display area
 - [ ] 1.2 Start/Pause/Stop timer functionality
-- [ ] 1.3 Coin system initialization (start with 0 coins)
+- [X] 1.3 Coin system initialization (start with 0 coins)
 - [ ] 1.4 Cat mood state management (default SLEEPY state)
 - [ ] 1.5 Data persistence using chrome.storage API
-- [ ] 1.6 Automatic +1 coin reward per minute of focus
+- [X] 1.6 Automatic +1 coin reward per minute of focus
 
 
 ## **MileStone 2**: Implement basic timer and data management
