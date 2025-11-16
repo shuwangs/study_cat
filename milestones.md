@@ -15,7 +15,7 @@ Due: 🗓️ Nov 15, 2025
 
 Tasks:
 - [X] 1.1 Popup UI layout with timer display area
-- [ ] 1.2 Start/Pause/Stop timer functionality
+- [X] 1.2 Start/Pause/Stop timer functionality
 - [X] 1.3 Coin system initialization (start with 0 coins)
 - [ ] 1.4 Cat mood state management (default SLEEPY state)
 - [ ] 1.5 Data persistence using chrome.storage API
@@ -37,7 +37,7 @@ Tasks:
   
 
 Note:
- Different Chrome extensions :
+Different Chrome extensions :
 two different states: change the 
 if the chrome extension is not open. 
 if backList is visit the icon when the 

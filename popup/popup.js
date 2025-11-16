@@ -1,6 +1,6 @@
 
 /*
-TODOS:
+Done: 
 1. format time
 2. Disply that that user entered
 3. count down
@@ -58,11 +58,16 @@ function UpdateDisplayFromInput() {
 * Once Start btn is clicked, the input area is invisible
 * 
 */
-
+function parseTimeFromDisplay() {
+  let timeParts = timer_display.textContent.split(":");
+  const m = parseInt(timeParts[0], 10) || 0;
+  const s = parseInt(timeParts[1], 10) || 0;
+  return [m, s];
+}
 function startTimer() {
     if (!isRunning) {
-      const m = getInputTime(input_min.value);
-      const s = getInputTime(input_sec.value);
+      const m = parseTimeFromDisplay()[0];
+      const s = parseTimeFromDisplay()[1];
      
       totalSeconds = m * 60 + s;
       remainingSeconds = totalSeconds;
@@ -79,9 +84,8 @@ function startTimer() {
       if (inputArea) {
         inputArea.style.display = "none";
       }
-      // TODOS:
       // 1. Set time intevals to reduce time 
-      // 2. add coins?
+      // 2. add coins every minute
       timeCountDown = setInterval(() => {
         remainingSeconds--;
 
