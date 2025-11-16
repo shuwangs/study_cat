@@ -1,4 +1,5 @@
-import {Cat } from './Cat'
+import {Cat } from './models/Cat.js'
+import {Mood} from './models/Mood.js'
 console.log("Popup script loaded!");
 
 /*
@@ -20,15 +21,17 @@ const startBtn = document.getElementById("startBtn") as HTMLButtonElement;
 const pauseBtn = document.getElementById("pauseBtn") as HTMLButtonElement;
 const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
 const totalCoins = document.getElementById("coinCount")as HTMLElement;
+const catEmoji = document.getElementById("cat-emoji") as HTMLElement;
 
-// const cat = new Cat();
-// cat.setName("bobo");
+const myCat = new Cat();
+myCat.setName("bobo");
 
 let isRunning: boolean = false;
 let totalSeconds: number = 0;
 let remainingSeconds: number = 0;
 let coins: number = 0;
 let timeCountDown: number | undefined;;
+
 /*
 * Get input time and minutes
 */
@@ -36,6 +39,31 @@ function getInputTime(inputTime : string): number {
   const time = parseInt(inputTime, 10) || 0;
   return time;
 }
+
+/**
+ * Update cat mood
+ */
+function updateCatMoodDisplay() {
+  switch (myCat.currentMood) {
+    case "SLEEPY":
+      catEmoji.textContent = myCat.getMoodEmoji();
+      break;
+    case "HAPPY":
+      catEmoji.textContent = myCat.getMoodEmoji();
+
+      break;
+    case "EXCITED":
+      catEmoji.textContent = myCat.getMoodEmoji();
+      break;
+    case "ANGRY":
+      catEmoji.textContent = myCat.getMoodEmoji();
+      break;
+    default:
+      catEmoji.textContent = myCat.getMoodEmoji();
+      break;
+  }
+}
+
 
 /*
 * Toggle between buttons
@@ -93,6 +121,10 @@ function startTimer(): void{
       isRunning = true;
       toggleBtns(); 
 
+      // Update cat mood to happy when timer starts
+      myCat.setMood(Mood.HAPPY);
+      updateCatMoodDisplay();
+
       const inputArea = document.getElementById("timeInput");
       if (inputArea) {
         inputArea.style.display = "none";
@@ -133,6 +165,10 @@ function pauseTimer():void {
 
   isRunning = false;
   toggleBtns();
+
+  // Update cat mood to SLEEPY when timer is paused
+  myCat.setMood(Mood.SLEEPY);
+  updateCatMoodDisplay();
 }
 
 /**
@@ -150,6 +186,10 @@ function resetTimer():void {
   timer_display.textContent = `25:00`
   input_min.value = "25";
   input_sec.value = "00";
+
+  // Update cat mood to SLEEPY when timer is reset
+  myCat.setMood(Mood.SLEEPY);
+  updateCatMoodDisplay();
 }
 
 

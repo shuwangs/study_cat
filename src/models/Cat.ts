@@ -1,4 +1,4 @@
-import { Mood } from "./Mood";
+import { Mood } from "./Mood.js";
 
 export class Cat {
   id: string;

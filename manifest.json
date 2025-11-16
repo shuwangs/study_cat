@@ -17,6 +17,9 @@
   "content_security_policy": {
     "script-src": "'self' 'sha256-QGeDdF2V095YBhx2t1PW6xsymddqgrQpddTQJxiUntY='",
     "object-src": "'self'"
-  }
-
+  },
+  "web_accessible_resources": [{
+    "resources": ["dist/*.js", "dist/**/*.js"],
+    "matches": ["<all_urls>"]
+  }]
 }
