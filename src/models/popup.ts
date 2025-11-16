@@ -1,3 +1,5 @@
+import {Cat } from './Cat'
+console.log("Popup script loaded!");
 
 /*
 Done: 
@@ -5,25 +7,32 @@ Done:
 2. Disply that that user entered
 3. count down
 4. reset timer.
-
 */
-const timer_display = document.getElementById("timerDisplay")
-const input_min = document.getElementById("minutes");
-const input_sec = document.getElementById("seconds");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
-const totalCoins = document.getElementById("coinCount");
+/** TODOS
+ * 1. manage cat mood states, 
+ * 2. save coins to storage
+ * 3. load coins from storage
+ */
+const timer_display = document.getElementById("timerDisplay") as HTMLElement;
+const input_min = document.getElementById("minutes") as HTMLInputElement;
+const input_sec = document.getElementById("seconds") as HTMLInputElement;
+const startBtn = document.getElementById("startBtn") as HTMLButtonElement;
+const pauseBtn = document.getElementById("pauseBtn") as HTMLButtonElement;
+const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
+const totalCoins = document.getElementById("coinCount")as HTMLElement;
 
-let isRunning = false;
-let totalSeconds = 0;
-let remainingSeconds = 0;
-let coins = 0;
-let timeCountDown;
+// const cat = new Cat();
+// cat.setName("bobo");
+
+let isRunning: boolean = false;
+let totalSeconds: number = 0;
+let remainingSeconds: number = 0;
+let coins: number = 0;
+let timeCountDown: number | undefined;;
 /*
 * Get input time and minutes
 */
-function getInputTime(inputTime){
+function getInputTime(inputTime : string): number {
   const time = parseInt(inputTime, 10) || 0;
   return time;
 }
@@ -47,24 +56,28 @@ function toggleBtns() {
 /*
 * Update timerDisplay with Input time
 */
-function UpdateDisplayFromInput() {
+function UpdateDisplayFromInput(): void {
   const m = getInputTime(input_min.value);
   const s = getInputTime(input_sec.value);
   timer_display.textContent = `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
 }
 
+/**
+ * parse time from timer display
+ * @returns [minute, seconds] 
+ */
+function parseTimeFromDisplay(): [number, number] {
+  let timeParts = timer_display.textContent?.split(":");
+  const m = parseInt(timeParts[0], 10) || 0;
+  const s = parseInt(timeParts[1], 10) || 0;
+  return [m, s];
+}
 /*
 * Start button
 * Once Start btn is clicked, the input area is invisible
 * 
 */
-function parseTimeFromDisplay() {
-  let timeParts = timer_display.textContent.split(":");
-  const m = parseInt(timeParts[0], 10) || 0;
-  const s = parseInt(timeParts[1], 10) || 0;
-  return [m, s];
-}
-function startTimer() {
+function startTimer(): void{
     if (!isRunning) {
       const m = parseTimeFromDisplay()[0];
       const s = parseTimeFromDisplay()[1];
@@ -90,8 +103,8 @@ function startTimer() {
         remainingSeconds--;
 
         // display time 
-        displayMins = Math.floor(remainingSeconds / 60)
-        displaySecs = remainingSeconds % 60;
+        let displayMins = Math.floor(remainingSeconds / 60)
+        let displaySecs = remainingSeconds % 60;
         timer_display.textContent = `${displayMins.toString().padStart(2, "0")}:${displaySecs.toString().padStart(2, "0")}`
         
 
@@ -112,16 +125,20 @@ function startTimer() {
     }
 }
 
-// Pause Btn function
-function pauseTimer() {
+/**
+ * Pause Btn function
+ */
+function pauseTimer():void {
   clearInterval(timeCountDown);
 
   isRunning = false;
   toggleBtns();
 }
 
-// Reset btn function
-function resetTimer() {
+/**
+ *  Reset btn function
+ */
+function resetTimer():void {
   clearInterval(timeCountDown);
 
   isRunning = false;
