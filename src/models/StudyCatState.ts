@@ -3,5 +3,6 @@ import {Mood} from "./Mood.js";
 export interface StudyCatState {
   coins: number;
   currentMood: Mood;
-  elapsedTime: boolean;
+  blackList: string[];
+  elapsedTime: number;
 }
