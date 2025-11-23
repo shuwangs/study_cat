@@ -56,4 +56,12 @@ export class StudyCatStorage  {
       console.log("State has been reset to default");
     });
   }
+
+
+  // Update state to default values
+  public static async updateState(partial: Partial<StudyCatState>): Promise<void> {
+    const current = await this.loadState();
+    const updated = { ...current, ...partial };
+    await this.saveState(updated);
+  }
 };

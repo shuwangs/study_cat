@@ -1,7 +1,10 @@
-import {Cat } from './models/Cat.js'
-import {Mood} from './models/Mood.js'
-console.log("Popup script loaded!");
+import {Cat } from './models/Cat.js';
+import {Mood} from './models/Mood.js';
+import {StudyCatStorage} from "./storage/StudyCatStorage.js";
+import { runStorageTest } from "./utils/StudyCatStorageTest.js"; 
 
+console.log("Popup script loaded!");
+// runStorageTest();
 /*
 Done: 
 1. format time
@@ -14,6 +17,8 @@ Done:
  * 2. save coins to storage
  * 3. load coins from storage
  */
+
+// Get UI elements
 const timer_display = document.getElementById("timerDisplay") as HTMLElement;
 const input_min = document.getElementById("minutes") as HTMLInputElement;
 const input_sec = document.getElementById("seconds") as HTMLInputElement;
@@ -23,6 +28,7 @@ const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
 const totalCoins = document.getElementById("coinCount")as HTMLElement;
 const catEmoji = document.getElementById("cat-emoji") as HTMLElement;
 
+// Global variables
 const myCat = new Cat();
 myCat.setName("bobo");
 
@@ -32,6 +38,20 @@ let remainingSeconds: number = 0;
 let coins: number = 0;
 let timeCountDown: number | undefined;;
 
+async function init() {
+  const catState = await StudyCatStorage.loadState();
+
+  coins = catState.coins;
+  totalCoins.textContent = coins.toString();
+
+  
+  myCat.setMood(catState.currentMood);
+  updateCatMoodDisplay();
+}
+
+// Start the init.
+init();
+
 /*
 * Get input time and minutes
 */
@@ -40,6 +60,10 @@ function getInputTime(inputTime : string): number {
   return time;
 }
 
+
+
+
+// -------------------- Helper Functions ---------------------------
 /**
  * Update cat mood
  */
@@ -90,6 +114,7 @@ function UpdateDisplayFromInput(): void {
   timer_display.textContent = `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
 }
 
+//------------------------ Logic -------------------------------
 /**
  * parse time from timer display
  * @returns [minute, seconds] 
@@ -105,7 +130,7 @@ function parseTimeFromDisplay(): [number, number] {
 * Once Start btn is clicked, the input area is invisible
 * 
 */
-function startTimer(): void{
+async function startTimer() {
     if (!isRunning) {
       const m = parseTimeFromDisplay()[0];
       const s = parseTimeFromDisplay()[1];
@@ -125,32 +150,48 @@ function startTimer(): void{
       myCat.setMood(Mood.HAPPY);
       updateCatMoodDisplay();
 
+      await StudyCatStorage.updateState({ 
+        isStudying: true, 
+        currentMood: Mood.HAPPY 
+      });
+
       const inputArea = document.getElementById("timeInput");
       if (inputArea) {
         inputArea.style.display = "none";
       }
+      
       // 1. Set time intevals to reduce time 
       // 2. add coins every minute
-      timeCountDown = setInterval(() => {
+      timeCountDown = setInterval(async() => {
         remainingSeconds--;
 
-        // display time 
-        let displayMins = Math.floor(remainingSeconds / 60)
+        // update UI
+        let displayMins = Math.floor(remainingSeconds / 60);
         let displaySecs = remainingSeconds % 60;
-        timer_display.textContent = `${displayMins.toString().padStart(2, "0")}:${displaySecs.toString().padStart(2, "0")}`
-        
+        timer_display.textContent = `${displayMins.toString().padStart(2, "0")}:${displaySecs.toString().padStart(2, "0")}`;
 
         // Increase total coins
-        if((totalSeconds - remainingSeconds) % 60 === 0 && remainingSeconds > 0) {
-          coins = parseInt(totalCoins.textContent) + 1;
-          
+        if ((totalSeconds - remainingSeconds) % 60 === 0 && remainingSeconds > 0) {
+          coins += 1;
           totalCoins.textContent = coins.toString();
+          await StudyCatStorage.updateState({ coins: coins });
         }
+
         if(remainingSeconds <= 0) {
           clearInterval(timeCountDown);
           isRunning = false;
           toggleBtns();
 
+          coins += 5;
+          totalCoins.textContent = coins.toString();
+          myCat.setMood(Mood.EXCITED);
+          updateCatMoodDisplay();
+          
+          await StudyCatStorage.updateState({ 
+            isStudying: false, 
+            currentMood: Mood.EXCITED,
+            coins: coins
+          });
         }
       }, 1000); 
 
@@ -160,7 +201,7 @@ function startTimer(): void{
 /**
  * Pause Btn function
  */
-function pauseTimer():void {
+async function pauseTimer(){
   clearInterval(timeCountDown);
 
   isRunning = false;
@@ -169,16 +210,23 @@ function pauseTimer():void {
   // Update cat mood to SLEEPY when timer is paused
   myCat.setMood(Mood.SLEEPY);
   updateCatMoodDisplay();
+
+  // Pause study, update the StudyCatState
+  await StudyCatStorage.updateState ({
+    isStudying: false, 
+    currentMood: Mood.SLEEPY 
+  });
 }
 
 /**
  *  Reset btn function
  */
-function resetTimer():void {
+async function resetTimer() {
   clearInterval(timeCountDown);
 
   isRunning = false;
   toggleBtns();
+
   const inputArea = document.getElementById("timeInput");
   if (inputArea) {
     inputArea.style.display = "flex";
@@ -190,9 +238,12 @@ function resetTimer():void {
   // Update cat mood to SLEEPY when timer is reset
   myCat.setMood(Mood.SLEEPY);
   updateCatMoodDisplay();
+
+  await StudyCatStorage.updateState({
+    isStudying: false, 
+    currentMood: Mood.SLEEPY 
+  })
 }
-
-
 
 
 
@@ -204,8 +255,3 @@ input_sec.addEventListener("input", UpdateDisplayFromInput);
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
-
-// Start btn
-// 
-
-
