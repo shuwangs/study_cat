@@ -5,4 +5,7 @@ export interface StudyCatState {
   currentMood: Mood;
   blackList: string[];
   elapsedTime: number;
+  
+  // for background monitor
+  isStudying: boolean;
 }
