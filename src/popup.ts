@@ -10,7 +10,7 @@ Done:
 4. reset timer.
 */
 /** TODOS
- * 1. manage cat mood states, 
+ * 1. manage cat mood states, - On start: happy, on pause: sleepy, on end: excited
  * 2. save coins to storage
  * 3. load coins from storage
  */
