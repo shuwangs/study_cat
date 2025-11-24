@@ -26,4 +26,47 @@ chrome.runtime.onInstalled.addListener(async(details) => {
 })
 
 // Request feedback form the user if uninstalled
-https://docs.google.com/forms/d/e/1FAIpQLSdfXXCiNYqTCt7iCdBHhkNddl67pSiVpF3EDWimVQCaJu-CYw/viewform?usp=dialog
+chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSdfXXCiNYqTCt7iCdBHhkNddl67pSiVpF3EDWimVQCaJu-CYw/viewform");
+
+// Monitor the blackList
+
+chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
+  console.log(tabId);
+  if (changeInfo.status === "complete" && tab.url) {
+    const myState = await StudyCatStorage.loadState();
+    if(!myState.isStudying) {
+      return;
+    }
+
+    const isBlacklisted = myState.blackList.some(badSite => tab.url!.includes(badSite));
+
+    if (isBlacklisted) {
+      console.log(`You are visiting blacklisted website ${tab.url}`);
+
+      const newCoins = Math.max(0, myState.coins - 10);
+
+      await StudyCatStorage.updateState({
+        coins: newCoins, 
+        currentMood: Mood.ANGRY,
+        isStudying: false
+      });
+
+      /**
+       * For cat to pop out
+      */ 
+
+      // chrome.tabs.sendMessage(tabId, {
+      //   type: "SHOW_CAT_WARNING",
+      //   url: tab.url
+      // });
+      chrome.action.setBadgeText({ text: "!" });
+      chrome.action.setBadgeBackgroundColor({ color: "#FF0000" });
+      
+      setTimeout(() => {
+        chrome.action.setBadgeText({ text: "" });
+      }, 3000);
+
+    }
+  }
+
+})
