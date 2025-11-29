@@ -44,5 +44,5 @@ if backList is visit the icon when the
 
 
 **Next Step**
-- notes at Nov22/2025 -  Implement background watchdog.
+- notes at Nov22/2025 - Implement background watchdog.
 - notes at Nov23/2025 - background watches the internet tabs, needs to connect with the state
