@@ -3,7 +3,11 @@
   "description": "A simple focus timer with cat companion",
   "version": "1.0.0",
   "manifest_version": 3,
-  "permissions":  ["storage"],
+  "permissions":  ["storage", "tabs"],
+  "background":{
+    "service_worker": "dist/service_worker.js",
+    "type": "module"
+  },
 
   "icons": {
     "16": "images/icon-16.png",
@@ -22,4 +26,5 @@
     "resources": ["dist/*.js", "dist/**/*.js"],
     "matches": ["<all_urls>"]
   }]
+
 }
