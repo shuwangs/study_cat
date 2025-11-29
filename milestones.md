@@ -31,6 +31,7 @@ Tasks:
 - [X] 2.1 Add cat image (basic emoji or static PNG)
 - [~] 2.2 Mood transitions: Happy / Sleepy / Angry / Excited
 - [~] 2.3 Implement RewardSystem (+coins, penalties)
+- [ ] 2.3.1 fix the +coins not adding issue
 - [ ] 2.4 Integrate notification system (sound or popup message)
 - [ ] 2.5 Store session data in chrome.storage.sync
 
