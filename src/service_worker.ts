@@ -48,17 +48,20 @@ chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
       await StudyCatStorage.updateState({
         coins: newCoins, 
         currentMood: Mood.ANGRY,
-        isStudying: false
       });
 
       /**
        * For cat to pop out
       */ 
+      chrome.tabs.sendMessage(tabId, {
+        type: "STUDYCAT_PENALTY",
+        url: tab.url
+      });
+      chrome.runtime.sendMessage({
+        type: "STUDYCAT_PENALTY",
+        url: tab.url
+      });
 
-      // chrome.tabs.sendMessage(tabId, {
-      //   type: "SHOW_CAT_WARNING",
-      //   url: tab.url
-      // });
       chrome.action.setBadgeText({ text: "!" });
       chrome.action.setBadgeBackgroundColor({ color: "#FF0000" });
       

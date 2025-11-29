@@ -64,6 +64,8 @@ export class StudyCatStorage  {
   public static async updateState(partial: Partial<StudyCatState>): Promise<void> {
     const current = await this.loadState();
     const updated = { ...current, ...partial };
+  
     await this.saveState(updated);
   }
 };
+ 

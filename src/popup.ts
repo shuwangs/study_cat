@@ -24,6 +24,7 @@ let totalSeconds: number = 0;
 let remainingSeconds: number = 0;
 let coins: number = 0;
 let timeCountDown: number | undefined;;
+let minutesRewarded: number = 0;
 
 async function init() {
   const catState = await StudyCatStorage.loadState();
@@ -73,6 +74,25 @@ function runTimerLoop(targetEndTime: number) {
 
     if(remainingSeconds <= 0) {
       await timeCompleteHandler();
+    }
+
+    const elapsedSeconds = totalSeconds - remainingSeconds;
+    const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+
+    if(elapsedMinutes > minutesRewarded) {
+      const newlyRewarded = elapsedMinutes - minutesRewarded;
+      minutesRewarded = elapsedMinutes;
+
+      const currentState = await StudyCatStorage.loadState();
+      const newCoins = currentState.coins + newlyRewarded; 
+
+      coins = newCoins;
+      totalCoins.textContent = coins.toString();
+
+      await StudyCatStorage.updateState({
+        coins: newCoins,
+        elapsedTime: (currentState.elapsedTime ?? 0)
+      });
     }
   }, 1000);
 }
@@ -293,3 +313,18 @@ input_sec.addEventListener("input", UpdateDisplayFromInput);
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
+
+
+chrome.runtime.onMessage.addListener((message, sender, senderResponse) => {
+  if(message.type === "STUDYCAT_PENALTY") {
+    console.log("Received penalty message from background:", message.url);
+    (async ()=> {
+      const state = await StudyCatStorage.loadState();
+      coins = state.coins;
+      totalCoins.textContent = coins.toString();
+
+      myCat.setMood(state.currentMood);
+      updateCatMoodDisplay();
+    })();
+  }
+})
