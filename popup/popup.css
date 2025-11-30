@@ -128,7 +128,7 @@ body{
 
 #coinCount {
   font-weight: bold;
-  color: ;
+  color: #e07a5f ;
 }
 
 .cat {
@@ -152,8 +152,6 @@ body{
   font-size: 0.85rem;
 }
 
-/* .site-list li::before {
-  color: #e07a5f;
-  font-size: 0.7rem;
-  margin-right: 6px;
-} */
+#blacklist_cat {
+  width: 30%;
+}
