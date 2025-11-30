@@ -32,6 +32,7 @@ chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSdfXXCi
 
 chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
   console.log(tabId);
+  
   if (changeInfo.status === "complete" && tab.url) {
     const myState = await StudyCatStorage.loadState();
     if(!myState.isStudying) {
@@ -48,17 +49,20 @@ chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
       await StudyCatStorage.updateState({
         coins: newCoins, 
         currentMood: Mood.ANGRY,
-        isStudying: false
       });
 
       /**
        * For cat to pop out
       */ 
+      chrome.tabs.sendMessage(tabId, {
+        type: "STUDYCAT_PENALTY",
+        url: tab.url
+      });
+      chrome.runtime.sendMessage({
+        type: "STUDYCAT_PENALTY",
+        url: tab.url
+      });
 
-      // chrome.tabs.sendMessage(tabId, {
-      //   type: "SHOW_CAT_WARNING",
-      //   url: tab.url
-      // });
       chrome.action.setBadgeText({ text: "!" });
       chrome.action.setBadgeBackgroundColor({ color: "#FF0000" });
       
@@ -66,6 +70,22 @@ chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
         chrome.action.setBadgeText({ text: "" });
       }, 3000);
 
+    }
+  } else {
+    const myState = await StudyCatStorage.loadState();
+
+    if (myState.currentMood === Mood.ANGRY) {
+      console.log("User left blacklist website. Restoring mood...");
+
+      await StudyCatStorage.updateState ({
+        currentMood: Mood.HAPPY
+      });
+      
+      chrome.runtime.sendMessage({
+        type: "STUDYCAT_RECOVER",
+        url: tab.url
+
+      });
     }
   }
 

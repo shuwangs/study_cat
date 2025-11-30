@@ -12,7 +12,8 @@ const DEFAULT_STATE: StudyCatState = {
   currentMood: Mood.SLEEPY,
   blackList: ["youtube.com", "twitter.com", "facebook.com", "instagram.com"],
   elapsedTime: 0,
-  isStudying: false
+  isStudying: false,
+  targetEndTime: undefined
 };
 
 export class StudyCatStorage  {
@@ -34,7 +35,8 @@ export class StudyCatStorage  {
           currentMood: stored.currentMood ?? DEFAULT_STATE.currentMood,
           blackList: stored.blackList ?? DEFAULT_STATE.blackList,
           elapsedTime: stored.elapsedTime ?? DEFAULT_STATE.elapsedTime,
-          isStudying: stored.isStudying ?? DEFAULT_STATE.isStudying
+          isStudying: stored.isStudying ?? DEFAULT_STATE.isStudying,
+          targetEndTime: stored.targetEndTime
         };
         resolve(state);
       });
@@ -43,16 +45,16 @@ export class StudyCatStorage  {
   }
 
   // save state to a storable object
-  public static saveState(state: StudyCatState): void {
-    chrome.storage.sync.set({ key: state }).then(() => {
+  public static saveState(state: StudyCatState): Promise<void>{
+    return chrome.storage.sync.set({ key: state }).then(() => {
       console.log("Value is set");
     });
 
   }
 
   // reset state to default values
-  public static resetState(): void {
-    chrome.storage.sync.set({ key: DEFAULT_STATE }).then(() => {
+  public static resetState():  Promise<void> {
+    return chrome.storage.sync.set({ key: DEFAULT_STATE }).then(() => {
       console.log("State has been reset to default");
     });
   }
@@ -62,6 +64,8 @@ export class StudyCatStorage  {
   public static async updateState(partial: Partial<StudyCatState>): Promise<void> {
     const current = await this.loadState();
     const updated = { ...current, ...partial };
+  
     await this.saveState(updated);
   }
 };
+ 
