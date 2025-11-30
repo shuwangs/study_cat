@@ -326,5 +326,12 @@ chrome.runtime.onMessage.addListener((message, sender, senderResponse) => {
       myCat.setMood(state.currentMood);
       updateCatMoodDisplay();
     })();
+  } 
+  if (message.type === "STUDYCAT_RECOVER") {
+    (async () => {
+      const state = await StudyCatStorage.loadState();
+      myCat.setMood(state.currentMood);
+      updateCatMoodDisplay();
+    })();
   }
 })

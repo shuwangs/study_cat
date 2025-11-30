@@ -32,6 +32,7 @@ chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSdfXXCi
 
 chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
   console.log(tabId);
+  
   if (changeInfo.status === "complete" && tab.url) {
     const myState = await StudyCatStorage.loadState();
     if(!myState.isStudying) {
@@ -69,6 +70,22 @@ chrome.tabs.onUpdated.addListener(async(tabId, changeInfo,tab) => {
         chrome.action.setBadgeText({ text: "" });
       }, 3000);
 
+    }
+  } else {
+    const myState = await StudyCatStorage.loadState();
+
+    if (myState.currentMood === Mood.ANGRY) {
+      console.log("User left blacklist website. Restoring mood...");
+
+      await StudyCatStorage.updateState ({
+        currentMood: Mood.HAPPY
+      });
+      
+      chrome.runtime.sendMessage({
+        type: "STUDYCAT_RECOVER",
+        url: tab.url
+
+      });
     }
   }
 
