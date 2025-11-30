@@ -40,17 +40,19 @@ export class Cat {
   }
 
   getMoodEmoji(): string {
+    const basePath = "../images/";
     switch (this.currentMood) {
       case Mood.SLEEPY:
-        return "😴";
+        return basePath + "sleepy_cat.png";
       case Mood.HAPPY:
-        return "😺";
+        return basePath + "happy_cat.png";
       case Mood.ANGRY:
-        return "😾";
+        return basePath + "angry_cat.png";
       case Mood.EXCITED:
-        return "🤩";
+        return basePath + "excited_cat.png";
+
       default:
-        return "😺";
+        return basePath + "happy_cat.png";
     }
   }
   // Setters

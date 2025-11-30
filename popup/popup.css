@@ -124,6 +124,7 @@ body{
   font-size: 1rem;
   gap: 5px;
   margin-top: 10px;
+  padding-left: 20vw;
 }
 
 #coinCount {
@@ -132,8 +133,10 @@ body{
 }
 
 .cat {
-  font-size: 80px;
-  /* display: inline-block; */
+  margin: 10px;
+}
+#cat-emoji {
+  width: 40%;
 }
 
 /* Setting area */

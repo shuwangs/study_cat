@@ -14,7 +14,7 @@ const startBtn = document.getElementById("startBtn") as HTMLButtonElement;
 const pauseBtn = document.getElementById("pauseBtn") as HTMLButtonElement;
 const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
 const totalCoins = document.getElementById("coinCount")as HTMLElement;
-const catEmoji = document.getElementById("cat-emoji") as HTMLElement;
+const catEmoji = document.getElementById("cat-emoji") as HTMLImageElement;
 
 // --- UI Elements (Navigation & Views) ---
 const navHome = document.getElementById("nav-home") as HTMLElement;
@@ -345,23 +345,13 @@ function getInputTime(inputTime : string): number {
  * Update cat mood
  */
 function updateCatMoodDisplay() {
-  switch (myCat.currentMood) {
-    case "SLEEPY":
-      catEmoji.textContent = myCat.getMoodEmoji();
-      break;
-    case "HAPPY":
-      catEmoji.textContent = myCat.getMoodEmoji();
+  catEmoji
 
-      break;
-    case "EXCITED":
-      catEmoji.textContent = myCat.getMoodEmoji();
-      break;
-    case "ANGRY":
-      catEmoji.textContent = myCat.getMoodEmoji();
-      break;
-    default:
-      catEmoji.textContent = myCat.getMoodEmoji();
-      break;
+  if(catEmoji) {
+    const newEmojiSrc = myCat.getMoodEmoji();
+    catEmoji.src = newEmojiSrc;
+  } else {
+      console.error("Error: Could not find element with ID 'cat-emoji' in popup.html.");
   }
 }
 
