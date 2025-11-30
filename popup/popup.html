@@ -8,48 +8,109 @@
   </head>
 
   <body>
-
-    <div class="header-bar">
-      <h1 class="timer_title">Target Time</h1>
-
-      <button id="settingsBtn" class="icon-btn" aria-label="Open settings">
+    <!-- 1. Nav Bar -->
+     <nav class="navbar">
+      <div class="nav-icon active" id="nav-home" title="Timer">
+        <i class="bi bi-stopwatch"></i>
+      </div>
+      <div class="nav-icon" id="nav-stats" title="Analytics">
+        <i class="bi bi-bar-chart-line"></i>
+      </div>
+      <div class="nav-icon" id="nav-settings" title="Settings">
         <i class="bi bi-gear"></i>
-      </button>
-    </div>
-    
-    <div class="timer-container">
-      <div class="time_input" id="timeInput">
-        <label for="minutes">
-          <input type="number" id="minutes" min="0" max="59" value="25">
-          Minutes
-        </label>
-        <label for="seconds">
-          <input type="number" id="seconds" min="0" max="59" value="00">
-          Seconds
-        </label>
       </div>
-      <div class="timer_display" id="timerDisplay">
-        25:00
-      </div>
-      <div class="control_btn">
-        <button class="btn btn-primary" id="startBtn">Start</button>
-        <button class="btn btn-primary" id="pauseBtn" style="display: none;">Pause</button>
-        <button class="btn btn-primary" id="resetBtn">Reset</button>
+    </nav>
 
-      </div>
+    <!--  2. Main View -->
+    <div id="view-home" class="view-section" >
 
-      <div class="cat_containter">
-        <div class="coin_container">
-          <i class="bi bi-coin"></i>
-          <span id="coinCount">0</span>
+      <h1 class="timer_title">Focus Time</h1>
+      <div class="timer-container">
+
+        <div class="time_input" id="timeInput">
+          <label for="minutes">
+            <input type="number" id="minutes" min="0" max="59" value="25">
+            Minutes
+          </label>
+          <label for="seconds">
+            <input type="number" id="seconds" min="0" max="59" value="00">
+            Seconds
+          </label>
         </div>
-        <div class="cat">
-          <p id="cat-emoji" style="font-size:100px">😴</p>
+
+        <!-- Countdown Display -->
+        <div class="timer_display" id="timerDisplay">
+          25:00
+        </div>
+
+        <!-- Buttons -->
+        <div class="control_btn">
+          <button class="btn btn-primary" id="startBtn">Focus</button>
+          <button class="btn btn-primary" id="pauseBtn" style="display: none;">Pause</button>
+          <button class="btn btn-primary" id="resetBtn">Reset</button>
+        </div>
+        
+        <!-- Cat and Coins -->
+        <div class="cat_containter">
+          <div class="coin_container">
+            <i class="bi bi-coin"></i>
+            <span id="coinCount">0</span>
+          </div>
+          <div class="cat">
+            <p id="cat-emoji" style="font-size:80px">😴</p>
+          </div>
         </div>
       </div>
+
     </div>
+    <!--  3.  Analytics view -->
+    <div id="view-stats" class="view-section" style="display: none;">
+      <h2>Progress</h2>
+      <div class="stats-card">
+        <div class="stat-item">
+          <i class="bi bi-lightning-charge-fill text-yellow"></i>
+          <span id="stat-total-focus">0</span>
+          <small>Total Mins</small>
+        </div>
+        <div class="stat-item">
+          <i class="bi bi-calendar-check-fill text-green"></i>
+          <span id="stat-days-streak">0</span>
+          <small>Sessions</small>
+        </div>
+      </div>
 
+       <!-- Today's Progress -->
+      <div class="daily-progress">
+        <p>Today's Focus</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="daily-progress-fill" style="width: 0%"></div>
+        </div>
+        <small id="daily-text">0 / 60 mins</small>
+      </div>
+    </div>
+      
+  
+    <!--  4. Settings Vies -->
+    <div id="view-settings" class="view-section" style="display: none;">
+      <h2>Settings</h2>
+      
+      <!-- BlackList mangement -->
+      <div class="settings-group">
+        <h3>🚫 Distracting Sites</h3>
+        <p class="hint">Sites that make the cat angry.</p>
+        
+        <div class="add-site-box">
+          <input type="text" id="blacklist-input" placeholder="e.g. youtube.com">
+          <button id="btn-add-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
+          <button id="btn-update-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
+          <button id="btn-delete-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
+        </div>
 
+        <ul id="blacklist-ul" class="site-list">
+          <!-- JS will be inserted here -->
+        </ul>
+      </div>
+    </div>
     <script type="module" src="../dist/popup.js"></script>
   </body>
 </html>

@@ -1,11 +1,12 @@
 import {Cat } from './models/Cat.js';
 import {Mood} from './models/Mood.js';
 import {StudyCatStorage} from "./storage/StudyCatStorage.js";
-import { runStorageTest } from "./utils/StudyCatStorageTest.js"; 
+import { StudyCatState } from './models/StudyCatState.js'; 
 
 console.log("Popup script loaded!");
 // runStorageTest();
-// Get UI elements
+
+// --- UI Elements (Home) ---
 const timer_display = document.getElementById("timerDisplay") as HTMLElement;
 const input_min = document.getElementById("minutes") as HTMLInputElement;
 const input_sec = document.getElementById("seconds") as HTMLInputElement;
@@ -15,7 +16,24 @@ const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
 const totalCoins = document.getElementById("coinCount")as HTMLElement;
 const catEmoji = document.getElementById("cat-emoji") as HTMLElement;
 
-// Global variables
+// --- UI Elements (Navigation & Views) ---
+const navHome = document.getElementById("nav-home") as HTMLElement;
+const navStats = document.getElementById("nav-stats") as HTMLElement;
+const navSettings = document.getElementById("nav-settings") as HTMLElement;
+const viewHome = document.getElementById("view-home") as HTMLElement;
+const viewStats = document.getElementById("view-stats") as HTMLElement;
+const viewSettings = document.getElementById("view-settings") as HTMLElement;
+
+
+// --- UI Elements (Settings) ---
+const blacklistInput = document.getElementById("blacklist-input") as HTMLInputElement;
+const btnAddSite = document.getElementById("btn-add-site") as HTMLButtonElement;
+const btnUpdateSite = document.getElementById("btn-update-site") as HTMLButtonElement;
+const btnDeleteSite = document.getElementById("btn-delete-site") as HTMLButtonElement;
+
+const blacklistUl = document.getElementById("blacklist-ul") as HTMLElement;
+
+// --- Global Variables ---
 const myCat = new Cat();
 myCat.setName("bobo");
 
@@ -26,17 +44,27 @@ let coins: number = 0;
 let timeCountDown: number | undefined;;
 let minutesRewarded: number = 0;
 
+// ==========================================
+// Initalization 
+// ==========================================
 async function init() {
   const catState = await StudyCatStorage.loadState();
 
+  // Basic data
   coins = catState.coins;
   totalCoins.textContent = coins.toString();
   myCat.setMood(catState.currentMood);
   updateCatMoodDisplay();
 
+  // render blacklist and stats
+  renderBlacklist(catState.blackList);
+  renderStats();
+
+  // cat mood recover and give coins
   if(catState.isStudying && catState.targetEndTime) {
     const now = Date.now();
     const diff = catState.targetEndTime - now;
+
     if (diff > 0) {
       console.log("Counting is back on ...");
       remainingSeconds = Math.ceil(diff / 1000);
@@ -58,6 +86,51 @@ async function init() {
 
 // Start the init.
 init();
+
+// ==========================================
+// Switch views 
+// ==========================================
+function switchView(viewName: 'home' | 'stats' | 'settings') {
+  // hide all 
+  viewHome.style.display = "none";
+  viewStats.style.display = "none";
+  viewSettings.style.display = "none";
+
+  if (viewName == 'home') {
+    viewHome.style.display = "block";;
+    navHome.classList.add("active");
+  } else if (viewName == 'stats') {
+    viewStats.style.display = "block";;
+    navHome.classList.add("active");
+  } else if (viewName == 'settings') {
+    viewSettings.style.display = "block";;
+    navHome.classList.add("active");
+  } 
+}
+
+// ==========================================
+// Blacklist related logic
+// ==========================================
+function renderBlacklist(list:string[]) {
+  return null;
+}
+
+function addSiteToBlacklist() {
+  return null;
+}
+function updateSiteFromBlacklist () {
+  return null;
+}
+
+function deleteSiteFromBlacklist() {
+
+}
+
+// ==========================================
+// Stats View related logic
+// ==========================================
+
+function renderStats(){return null};
 
 //------------------------ Logic -------------------------------
 // Update UI and check the the time
@@ -305,9 +378,20 @@ function parseTimeFromDisplay(): [number, number] {
 }
 
 // -------------------- EVENT LISTENERS ---------------------------
+// nav
+navHome.addEventListener('click', () => switchView('home'));
+navStats.addEventListener('click', () => switchView('stats'));
+navSettings.addEventListener('click', () => switchView('settings'));
+
+// Settings add buton
+btnAddSite.addEventListener('click', addSiteToBlacklist);
+btnUpdateSite.addEventListener('click', updateSiteFromBlacklist);
+btnDeleteSite.addEventListener('click', deleteSiteFromBlacklist);
+
+
+// timer input area
 input_min.addEventListener("input", UpdateDisplayFromInput);
 input_sec.addEventListener("input", UpdateDisplayFromInput);
-
 
 // Add EventListener to Start button, reset button
 startBtn.addEventListener("click", startTimer);
