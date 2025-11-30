@@ -58,6 +58,7 @@ async function init() {
 
   // render blacklist and stats
   renderBlacklist(catState.blackList);
+  console.log(`BlackList Length: ${catState.blackList.length}`)
   renderStats();
 
   // cat mood recover and give coins
@@ -112,18 +113,60 @@ function switchView(viewName: 'home' | 'stats' | 'settings') {
 // Blacklist related logic
 // ==========================================
 function renderBlacklist(list:string[]) {
-  return null;
+  blacklistUl.innerHTML = "";
+
+  if(list.length === 0) {
+    blacklistUl.innerHTML = '<li style="color:#999; justify-content:center;">No sites added yet</li>';
+    return;
+  }
+
+  list.forEach(site => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size: 1.2rem;color: transparent; text-shadow: 0 0 0 #e07a5f;">🐾</span> 
+        <span>${site}</span>
+      </div>
+      </div>
+      <i class="bi bi-trash btn-delete" style="cursor:pointer;" title="Remove"></i>
+    `;
+
+    // delete buton eventListener
+    const delBtn = li.querySelector('.btn-delete') as HTMLElement;
+    delBtn.addEventListener('click', async () =>{
+      await deleteSiteFromBlacklist(site);
+    });
+    blacklistUl.appendChild(li);
+
+  });
+
 }
 
-function addSiteToBlacklist() {
-  return null;
-}
-function updateSiteFromBlacklist () {
-  return null;
+async function addSiteToBlacklist() {
+  const newSite = blacklistInput.value.trim().toLowerCase();
+  if (!newSite) return;
+
+  const state = await StudyCatStorage.loadState();
+
+  if(!state.blackList.includes(newSite)) {
+    // const newList = state.blackList.push(newSite);
+        const newList = [...state.blackList, newSite];
+
+    await StudyCatStorage.updateState({blackList: newList});
+    renderBlacklist(newList);
+    blacklistInput.value="";
+
+  } else{
+    alert("Site is already in the list!");
+  }
 }
 
-function deleteSiteFromBlacklist() {
 
+async function deleteSiteFromBlacklist(sitetoRemove: String) {
+  const state = await StudyCatStorage.loadState();
+  const newList = state.blackList.filter(site => site !== sitetoRemove);
+  await StudyCatStorage.updateState({blackList: newList});
+  renderBlacklist(newList);
 }
 
 // ==========================================
@@ -385,9 +428,6 @@ navSettings.addEventListener('click', () => switchView('settings'));
 
 // Settings add buton
 btnAddSite.addEventListener('click', addSiteToBlacklist);
-btnUpdateSite.addEventListener('click', updateSiteFromBlacklist);
-btnDeleteSite.addEventListener('click', deleteSiteFromBlacklist);
-
 
 // timer input area
 input_min.addEventListener("input", UpdateDisplayFromInput);

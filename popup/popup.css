@@ -135,3 +135,25 @@ body{
   font-size: 80px;
   /* display: inline-block; */
 }
+
+/* Setting area */
+.blacklist-display {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #f0dfc4;
+}
+
+.site-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px dotted #e6c9aa;
+  font-size: 0.85rem;
+}
+
+/* .site-list li::before {
+  color: #e07a5f;
+  font-size: 0.7rem;
+  margin-right: 6px;
+} */

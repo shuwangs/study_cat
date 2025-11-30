@@ -97,18 +97,20 @@
       <!-- BlackList mangement -->
       <div class="settings-group">
         <h3>🚫 Distracting Sites</h3>
-        <p class="hint">Sites that make the cat angry.</p>
         
         <div class="add-site-box">
           <input type="text" id="blacklist-input" placeholder="e.g. youtube.com">
           <button id="btn-add-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
-          <button id="btn-update-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
-          <button id="btn-delete-site" class="btn-small"><i class="bi bi-plus-lg"></i></button>
         </div>
 
-        <ul id="blacklist-ul" class="site-list">
-          <!-- JS will be inserted here -->
-        </ul>
+        <p class="input_msg"> </p>
+
+        <div class="blacklist-display">
+          <ul id="blacklist-ul" class="site-list">
+            <!-- JS will be inserted here -->
+          </ul>
+        </div>
+
       </div>
     </div>
     <script type="module" src="../dist/popup.js"></script>
