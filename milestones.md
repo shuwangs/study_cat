@@ -33,7 +33,9 @@ Tasks:
 - [~] 2.3 Implement RewardSystem (+coins, penalties)
 - [X] 2.3.1 fix the +coins not adding issue;
 - [X] 2.3.2 after using blacklist web, the cat mood is not changed, and scores not descresed immediately.
-- [ ] 2.3.3 blackList is closed, catMood return to happy.
+- [X] 2.3.3 blackList is closed, catMood return to happy.
+- [X] 2.3.4 add blacklist and stats subview.
+- [ ] 2.3.5 blacklist add function check, if added add an in line message.
 - [ ] 2.4 Integrate notification system (sound or popup message)
 - [ ] 2.5 Store session data in chrome.storage.sync
 
