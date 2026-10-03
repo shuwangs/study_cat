@@ -3,28 +3,35 @@
   "description": "A simple focus timer with cat companion",
   "version": "1.0.0",
   "manifest_version": 3,
-  "permissions":  ["storage", "tabs"],
-  "background":{
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "background": {
     "service_worker": "dist/service_worker.js",
     "type": "module"
   },
-
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
-  "action" :{
+  "action": {
     "default_popup": "popup/popup.html"
   },
   "content_security_policy": {
-    "script-src": "'self' 'sha256-QGeDdF2V095YBhx2t1PW6xsymddqgrQpddTQJxiUntY='",
-    "object-src": "'self'"
+    "extension_pages": "script-src 'self'; object-src 'self';"
   },
-  "web_accessible_resources": [{
-    "resources": ["dist/*.js", "dist/**/*.js"],
-    "matches": ["<all_urls>"]
-  }]
-
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*/*"
+      ],
+      "js": [
+        "dist/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
 }
